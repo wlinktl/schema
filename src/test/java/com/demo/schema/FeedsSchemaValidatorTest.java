@@ -1,4 +1,4 @@
-package com.demo.file;
+package com.demo.schema;
 
 import com.demo.schema.FeedsSchemaValidator;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
