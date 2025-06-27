@@ -12,10 +12,9 @@
     monitor-uri: "monitor-uri-1"
     transaction: 
       commit:
-	    success-uri: "success-uri-1"
-	  rollback:
-	    failure-uri: "failure-uri-1"
-	   
+        success-uri: "success-uri-1"
+      rollback:
+        failure-uri: "failure-uri-1"
   inbound-datasets:
     - name: "name-1"
       active: true 
@@ -24,34 +23,27 @@
       module: "module-1"
       format: "format-1"
       compression: "gzip"
-	  delimiter: "|"
-	  trailing-delimeter: false
-	  add-columns-csv: "a,b,c"
-	  cob-script: "cob"
-	  
-	  text-header: 
-	    type: "type-1"
-		token: "EOH"
-		source-name-position: 1
-		cob-position: 2
-		snapshot-position: 4
-		snapshot-format: "yyyymmdd"
-		record-count-position: 5
-		column-count-position: 6
-		column-names-present: true
-		frequency-position: 3
-		
-	  text-trailer:
+      delimiter: "|"
+      trailing-delimeter: false
+      add-columns-csv: "a,b,c"
+      cob-script: "cob"
+      text-header: 
+        type: "type-1"
+        token: "EOH"
+        source-name-position: 1
+        cob-position: 2
+        snapshot-position: 4
+        snapshot-format: "yyyymmdd"
+        record-count-position: 5
+        column-count-position: 6
+        column-names-present: true
+        frequency-position: 3
+      text-trailer:
         token: ""
-
       output:
         hive:
           table-name:
-		  partitions:
-			cntry_cluster_id: "G"
-		done-file-uri: "done-file-uri-1"
-	    done-file-type: ".done"
-
-		
-		
- 	  
+          partitions:
+            cntry_cluster_id: "G"
+        done-file-uri: "done-file-uri-1"
+        done-file-type: ".done"

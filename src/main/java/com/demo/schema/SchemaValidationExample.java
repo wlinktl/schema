@@ -15,7 +15,7 @@ public class SchemaValidationExample {
         
         // Paths to the schema and YAML files
         String schemaPath = "src/main/resources/schema/feeds_schema.json";
-        String yamlPath = "src/main/resources/schema/yaml_example.yaml";
+        String yamlPath = "src/main/resources/schema/feed_1.yaml";
         
         try {
             System.out.println("Validating YAML file against JSON schema...");
