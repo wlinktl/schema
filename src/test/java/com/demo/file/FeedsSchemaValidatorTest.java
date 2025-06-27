@@ -1,5 +1,6 @@
 package com.demo.file;
 
+import com.demo.schema.FeedsSchemaValidator;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import org.junit.Before;
 import org.junit.Test;
