@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.concurrentli:concurrentli:1.3.2'
+    
+    // JSON Schema validation
+    implementation 'com.github.java-json-tools:json-schema-validator:2.2.14'
+    
+    // YAML processing
+    implementation 'org.yaml:snakeyaml:2.0'
+    
+    // Jackson for JSON processing
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2'
+    
+    testImplementation 'junit:junit:4.12'
+}
+
+test {
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+tasks.withType(Test) {
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+
+
