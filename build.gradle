@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.jsonschema2pojo' version '1.2.1'
 }
 
 java {
@@ -26,6 +27,21 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2'
     
     testImplementation 'junit:junit:4.12'
+}
+
+// jsonschema2pojo configuration
+jsonSchema2Pojo {
+    source = files("${projectDir}/src/main/resources/schema")
+    targetPackage = 'com.demo.config.generated'
+    generateBuilders = true
+    usePrimitives = false
+    annotationStyle = 'jackson2'
+    includeAdditionalProperties = false
+    includeGetters = true
+    includeSetters = true
+    includeToString = true
+    includeEqualsAndHashCode = true
+    serializable = true
 }
 
 test {
