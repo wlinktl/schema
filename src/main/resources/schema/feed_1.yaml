@@ -1,7 +1,7 @@
 - name: "name1"
   active: true #optional: true by default"
-  layer: 'layer'
-  logs-uri: 'log-uri'
+  layer: "layer"
+  logs-uri: "log-uri"
  
   file-watcher:
     name: "name1"
@@ -42,7 +42,7 @@
         token: ""
       output:
         hive:
-          table-name:
+          table-name: "my_table_name"
           partitions:
             cntry_cluster_id: "G"
         done-file-uri: "done-file-uri-1"
