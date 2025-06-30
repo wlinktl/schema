@@ -3,6 +3,7 @@ package com.demo.schema;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
+import com.github.fge.jsonschema.main.JsonSchema;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Rule;
@@ -35,7 +36,7 @@ public class SchemaValidatorTest {
     @Test
     public void testLoadSchema_ValidSchema() throws IOException, ProcessingException {
         // When: Loading a valid schema
-        var schema = validator.loadSchema(VALID_SCHEMA_PATH);
+        JsonSchema schema = validator.loadSchema(VALID_SCHEMA_PATH);
         
         // Then: Schema should be loaded successfully
         assertNotNull("Schema should not be null", schema);
@@ -91,7 +92,7 @@ public class SchemaValidatorTest {
     @Test
     public void testValidate_ValidData() throws IOException, ProcessingException {
         // Given: Valid schema and data
-        var schema = validator.loadSchema(VALID_SCHEMA_PATH);
+        JsonSchema schema = validator.loadSchema(VALID_SCHEMA_PATH);
         JsonNode data = validator.loadYaml(VALID_YAML_PATH);
         
         // When: Validating valid data
@@ -105,13 +106,11 @@ public class SchemaValidatorTest {
     @Test
     public void testValidate_InvalidData() throws IOException, ProcessingException {
         // Given: Valid schema but invalid data
-        var schema = validator.loadSchema(VALID_SCHEMA_PATH);
+        JsonSchema schema = validator.loadSchema(VALID_SCHEMA_PATH);
         
         // Create invalid data (missing required fields)
-        String invalidYaml = """
-            - name: "test"
-              # Missing required file-watcher and inbound-datasets
-            """;
+        String invalidYaml = "- name: \"test\"\n" +
+                           "  # Missing required file-watcher and inbound-datasets";
         File tempFile = tempFolder.newFile("invalid_data.yaml");
         Files.write(tempFile.toPath(), invalidYaml.getBytes());
         JsonNode invalidData = validator.loadYaml(tempFile.getAbsolutePath());
@@ -163,12 +162,10 @@ public class SchemaValidatorTest {
     @Test
     public void testIsValid_InvalidReport() throws IOException, ProcessingException {
         // Given: An invalid validation report
-        var schema = validator.loadSchema(VALID_SCHEMA_PATH);
+        JsonSchema schema = validator.loadSchema(VALID_SCHEMA_PATH);
         
         // Create invalid data
-        String invalidYaml = """
-            - name: "test"
-            """;
+        String invalidYaml = "- name: \"test\"";
         File tempFile = tempFolder.newFile("invalid_test.yaml");
         Files.write(tempFile.toPath(), invalidYaml.getBytes());
         JsonNode invalidData = validator.loadYaml(tempFile.getAbsolutePath());
@@ -194,12 +191,10 @@ public class SchemaValidatorTest {
     @Test
     public void testPrintReport_InvalidReport() throws IOException, ProcessingException {
         // Given: An invalid validation report
-        var schema = validator.loadSchema(VALID_SCHEMA_PATH);
+        JsonSchema schema = validator.loadSchema(VALID_SCHEMA_PATH);
         
         // Create invalid data
-        String invalidYaml = """
-            - name: "test"
-            """;
+        String invalidYaml = "- name: \"test\"";
         File tempFile = tempFolder.newFile("invalid_print.yaml");
         Files.write(tempFile.toPath(), invalidYaml.getBytes());
         JsonNode invalidData = validator.loadYaml(tempFile.getAbsolutePath());
@@ -213,36 +208,32 @@ public class SchemaValidatorTest {
     @Test
     public void testValidateFile_ComplexSchema() throws IOException, ProcessingException {
         // Given: A complex schema with nested objects and arrays
-        String complexSchema = """
-            {
-              "$schema": "http://json-schema.org/draft-07/schema#",
-              "type": "object",
-              "properties": {
-                "name": {"type": "string"},
-                "config": {
-                  "type": "object",
-                  "properties": {
-                    "enabled": {"type": "boolean"},
-                    "items": {
-                      "type": "array",
-                      "items": {"type": "string"}
-                    }
-                  },
-                  "required": ["enabled"]
-                }
-              },
-              "required": ["name", "config"]
-            }
-            """;
+        String complexSchema = "{\n" +
+            "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+            "  \"type\": \"object\",\n" +
+            "  \"properties\": {\n" +
+            "    \"name\": {\"type\": \"string\"},\n" +
+            "    \"config\": {\n" +
+            "      \"type\": \"object\",\n" +
+            "      \"properties\": {\n" +
+            "        \"enabled\": {\"type\": \"boolean\"},\n" +
+            "        \"items\": {\n" +
+            "          \"type\": \"array\",\n" +
+            "          \"items\": {\"type\": \"string\"}\n" +
+            "        }\n" +
+            "      },\n" +
+            "      \"required\": [\"enabled\"]\n" +
+            "    }\n" +
+            "  },\n" +
+            "  \"required\": [\"name\", \"config\"]\n" +
+            "}";
         
-        String validData = """
-            name: "test"
-            config:
-              enabled: true
-              items:
-                - "item1"
-                - "item2"
-            """;
+        String validData = "name: \"test\"\n" +
+            "config:\n" +
+            "  enabled: true\n" +
+            "  items:\n" +
+            "    - \"item1\"\n" +
+            "    - \"item2\"";
         
         File schemaFile = tempFolder.newFile("complex_schema.json");
         File dataFile = tempFolder.newFile("complex_data.yaml");
@@ -259,27 +250,21 @@ public class SchemaValidatorTest {
     @Test
     public void testValidateFile_EnumValidation() throws IOException, ProcessingException {
         // Given: A schema with enum validation
-        String enumSchema = """
-            {
-              "$schema": "http://json-schema.org/draft-07/schema#",
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string",
-                  "enum": ["active", "inactive", "pending"]
-                }
-              },
-              "required": ["status"]
-            }
-            """;
+        String enumSchema = "{\n" +
+            "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+            "  \"type\": \"object\",\n" +
+            "  \"properties\": {\n" +
+            "    \"status\": {\n" +
+            "      \"type\": \"string\",\n" +
+            "      \"enum\": [\"active\", \"inactive\", \"pending\"]\n" +
+            "    }\n" +
+            "  },\n" +
+            "  \"required\": [\"status\"]\n" +
+            "}";
         
-        String validData = """
-            status: "active"
-            """;
+        String validData = "status: \"active\"";
         
-        String invalidData = """
-            status: "invalid_status"
-            """;
+        String invalidData = "status: \"invalid_status\"";
         
         File schemaFile = tempFolder.newFile("enum_schema.json");
         File validFile = tempFolder.newFile("valid_enum.yaml");
