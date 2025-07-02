@@ -23,7 +23,7 @@ public class SchemaValidatorTest {
     
     private SchemaValidator validator;
     private static final String VALID_SCHEMA_PATH = "src/main/resources/schema/feeds_schema.json";
-    private static final String VALID_YAML_PATH = "src/main/resources/schema/feed_1.yaml";
+    private static final String VALID_YAML_PATH = "src/main/resources/feed_1.yaml";
     
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
