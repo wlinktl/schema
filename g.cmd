@@ -1,0 +1,1 @@
+mvn jsonschema2pojo:generate

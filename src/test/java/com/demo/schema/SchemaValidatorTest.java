@@ -360,7 +360,6 @@ public class SchemaValidatorTest {
                          "    inbound-uri: \"test\"\n" +
                          "    preprocess-uri: \"test\"\n" +
                          "    monitor-uri: \"test\"\n" +
-                         "    logs-uri: \"test\"\n" +
                          "    transaction:\n" +
                          "      commit:\n" +
                          "        success-uri: \"test\"\n" +
@@ -380,9 +379,7 @@ public class SchemaValidatorTest {
                          "      compression: \"gzip\"\n" +
                          "      output:\n" +
                          "        hive:\n" +
-                         "          table-name: \"test\"\n" +
-                         "        done-file-uri: \"test\"\n" +
-                         "        done-file-type: \".done\"";
+                         "          table-name: \"test\"";
         
         File gzipFile = this.tempFolder.newFile("gzip_test.yaml");
         Files.write(gzipFile.toPath(), gzipYaml.getBytes());
@@ -431,7 +428,6 @@ public class SchemaValidatorTest {
                            "    inbound-uri: \"test\"\n" +
                            "    preprocess-uri: \"test\"\n" +
                            "    monitor-uri: \"test\"\n" +
-                           "    logs-uri: \"test\"\n" +
                            "    transaction:\n" +
                            "      commit:\n" +
                            "        success-uri: \"test\"\n" +
@@ -451,9 +447,7 @@ public class SchemaValidatorTest {
                            "      compression: \"invalid_compression\"\n" +
                            "      output:\n" +
                            "        hive:\n" +
-                           "          table-name: \"test\"\n" +
-                           "        done-file-uri: \"test\"\n" +
-                           "        done-file-type: \".done\"";
+                           "          table-name: \"test\"";
         
         File invalidFile = this.tempFolder.newFile("invalid_compression.yaml");
         Files.write(invalidFile.toPath(), invalidYaml.getBytes());
@@ -481,9 +475,7 @@ public class SchemaValidatorTest {
                                    "      format: \"test\"\n" +
                                    "      output:\n" +
                                    "        hive:\n" +
-                                   "          table-name: \"test\"\n" +
-                                   "        done-file-uri: \"test\"\n" +
-                                   "        done-file-type: \".done\"";
+                                   "          table-name: \"test\"";
         
         File missingFileWatcherFile = this.tempFolder.newFile("missing_file_watcher.yaml");
         Files.write(missingFileWatcherFile.toPath(), missingFileWatcher.getBytes());
@@ -493,5 +485,59 @@ public class SchemaValidatorTest {
         
         // Then: Should be invalid
         assertFalse("Missing file-watcher should fail validation", report.isSuccess());
+    }
+    
+    @Test
+    public void testValidateFile_FlexibleKafkaConfigs() throws IOException, ProcessingException {
+        // Given: Valid schema and Kafka data with flexible configs
+        JsonSchema schema = validator.loadSchema(VALID_SCHEMA_PATH);
+        
+        // Test with different data types in Kafka configs
+        String flexibleConfigYaml = "- name: \"flexible_config_test\"\n" +
+                                   "  kafka-topic:\n" +
+                                   "    name: \"test-topic\"\n" +
+                                   "    active: true\n" +
+                                   "    flow-class: \"TestFlow\"\n" +
+                                   "    inbound-uri: \"test\"\n" +
+                                   "    preprocess-uri: \"test\"\n" +
+                                   "    monitor-uri: \"test\"\n" +
+                                   "    bootstrap-servers: \"localhost:9092\"\n" +
+                                   "    topics: \"test-topic\"\n" +
+                                   "    consumer-group-id: \"test-group\"\n" +
+                                   "    consumer-id: \"test-consumer\"\n" +
+                                   "    starting-offsets: \"earliest\"\n" +
+                                   "    configs:\n" +
+                                   "      \"security.protocol\": \"SASL_SSL\"\n" +
+                                   "      \"max.poll.records\": 500\n" +
+                                   "      \"enable.auto.commit\": true\n" +
+                                   "      \"some.optional.config\": null\n" +
+                                   "    transaction:\n" +
+                                   "      commit:\n" +
+                                   "        success-uri: \"test\"\n" +
+                                   "        done-file:\n" +
+                                   "          uri: \"test\"\n" +
+                                   "          type: \".done\"\n" +
+                                   "          template: \"test\"\n" +
+                                   "      rollback:\n" +
+                                   "        failure-uri: \"test\"\n" +
+                                   "  inbound-datasets:\n" +
+                                   "    - name: \"test\"\n" +
+                                   "      active: true\n" +
+                                   "      pattern: \"test\"\n" +
+                                   "      type: \"test\"\n" +
+                                   "      module: \"test\"\n" +
+                                   "      format: \"test\"\n" +
+                                   "      output:\n" +
+                                   "        hive:\n" +
+                                   "          table-name: \"test\"";
+        
+        File flexibleConfigFile = this.tempFolder.newFile("flexible_config_test.yaml");
+        Files.write(flexibleConfigFile.toPath(), flexibleConfigYaml.getBytes());
+        
+        // When: Validating with flexible configs
+        ProcessingReport report = validator.validate(schema, validator.loadYaml(flexibleConfigFile.getAbsolutePath()));
+        
+        // Then: Should be valid
+        assertTrue("Flexible Kafka configs should be valid", report.isSuccess());
     }
 } 

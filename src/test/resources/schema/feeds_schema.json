@@ -18,10 +18,6 @@
         "type": "string",
         "description": "Layer identifier"
       },
-      "logs-uri": {
-        "type": "string",
-        "description": "URI for logs"
-      },
       "file-watcher": {
         "type": "object",
         "properties": {
@@ -437,17 +433,9 @@
                     }
                   },
                   "required": ["table-name"]
-                },
-                "done-file-uri": {
-                  "type": "string",
-                  "description": "URI for done files"
-                },
-                "done-file-type": {
-                  "type": "string",
-                  "description": "Extension for done files"
                 }
               },
-              "required": ["hive", "done-file-uri", "done-file-type"]
+              "required": ["hive"]
             }
           },
           "required": ["name", "active", "pattern", "type", "module", "format", "output"]
@@ -455,7 +443,7 @@
       }
     },
     "required": ["name"],
-    "oneOf": [
+    "anyOf": [
       {
         "required": ["file-watcher", "inbound-datasets"]
       },
@@ -464,6 +452,9 @@
       },
       {
         "required": ["kafka-topic", "inbound-datasets"]
+      },
+      {
+        "required": ["kafka-file-replay", "kafka-topic", "inbound-datasets"]
       }
     ]
   }

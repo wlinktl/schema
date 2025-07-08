@@ -17,6 +17,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
     </properties>
 
     <dependencies>
@@ -47,6 +48,27 @@
             <version>2.15.2</version>
         </dependency>
 
+        <!-- Jackson JSR310 module for Java 8 date/time support -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+
+        <!-- JSON Schema to POJO generation -->
+        <dependency>
+            <groupId>com.sun.codemodel</groupId>
+            <artifactId>codemodel</artifactId>
+            <version>2.6</version>
+        </dependency>
+        
+        <!-- javax.annotation for @Generated annotation -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -69,6 +91,50 @@
                 </configuration>
             </plugin>
 
+            <!-- jsonschema2pojo Plugin for generating Java classes from JSON schema -->
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>${jsonschema2pojo.version}</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+                    <targetPackage>com.demo.schema.generated</targetPackage>
+                    <generateBuilders>true</generateBuilders>
+                    <usePrimitives>false</usePrimitives>
+                    <annotationStyle>jackson2</annotationStyle>
+                    <includeAdditionalProperties>true</includeAdditionalProperties>
+                    <includeGetters>true</includeGetters>
+                    <includeSetters>true</includeSetters>
+                    <includeToString>true</includeToString>
+                    <includeEqualsAndHashCode>true</includeEqualsAndHashCode>
+                    <serializable>true</serializable>
+                    <useLongIntegers>false</useLongIntegers>
+                    <useBigIntegers>false</useBigIntegers>
+                    <useBigDecimals>false</useBigDecimals>
+                    <useOptionalForGetters>false</useOptionalForGetters>
+                    <useCommonsLang3>false</useCommonsLang3>
+                    <initializeCollections>true</initializeCollections>
+                    <classNamePrefix></classNamePrefix>
+                    <classNameSuffix></classNameSuffix>
+                    <fileExtensions>json</fileExtensions>
+                    <includes>
+                        <include>**/*.json</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*.yaml</exclude>
+                        <exclude>**/*.yml</exclude>
+                    </excludes>
+                    <useGeneratedAnnotation>false</useGeneratedAnnotation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Maven Shade Plugin for creating executable jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -83,7 +149,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.demo.schema.SchemaValidationExample</mainClass>
+                                    <mainClass>com.demo.schema.YamlParserExample</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

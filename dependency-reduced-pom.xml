@@ -17,6 +17,48 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.jsonschema2pojo</groupId>
+        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+        <version>${jsonschema2pojo.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+          <targetPackage>com.demo.schema.generated</targetPackage>
+          <generateBuilders>true</generateBuilders>
+          <usePrimitives>false</usePrimitives>
+          <annotationStyle>jackson2</annotationStyle>
+          <includeAdditionalProperties>true</includeAdditionalProperties>
+          <includeGetters>true</includeGetters>
+          <includeSetters>true</includeSetters>
+          <includeToString>true</includeToString>
+          <includeEqualsAndHashCode>true</includeEqualsAndHashCode>
+          <serializable>true</serializable>
+          <useLongIntegers>false</useLongIntegers>
+          <useBigIntegers>false</useBigIntegers>
+          <useBigDecimals>false</useBigDecimals>
+          <useOptionalForGetters>false</useOptionalForGetters>
+          <useCommonsLang3>false</useCommonsLang3>
+          <initializeCollections>true</initializeCollections>
+          <classNamePrefix />
+          <classNameSuffix />
+          <fileExtensions>json</fileExtensions>
+          <includes>
+            <include>**/*.json</include>
+          </includes>
+          <excludes>
+            <exclude>**/*.yaml</exclude>
+            <exclude>**/*.yml</exclude>
+          </excludes>
+          <useGeneratedAnnotation>false</useGeneratedAnnotation>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.4.1</version>
         <executions>
@@ -28,7 +70,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.demo.schema.SchemaValidationExample</mainClass>
+                  <mainClass>com.demo.schema.YamlParserExample</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -62,5 +104,6 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
   </properties>
 </project>
