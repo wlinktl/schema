@@ -12,6 +12,7 @@ This project demonstrates JSON Schema validation for YAML feed configurations an
 - ✅ **Flexible Configuration**: Support for various data types in Kafka configs
 - ✅ **Code Generation**: Generate strongly-typed Java classes from JSON schemas
 - ✅ **Type-Safe Parsing**: Parse YAML files into typed Java objects
+- ✅ **Complex Validation**: Custom business rules using Spring Validation API (Java 8 compatible)
 
 ## Project Structure
 
@@ -196,8 +197,96 @@ for (FeedConfiguration feed : feeds) {
 }
 ```
 
-## Testing
+## Complex Validation with Spring Validation API (Java 8 Compatible)
 
+For complex business rules that cannot be expressed in JSON Schema (like cross-field validation), 
+this project includes examples using Spring Validation API compatible with Java 8.
+
+### Complex Validation Examples
+
+1. **Basic Complex Validation** (`ComplexValidationExample.java`)
+   - Demonstrates custom validation rules like: "if fieldA=10 and fieldB=200, then fieldC must be 300 or 400"
+   - Shows how to create custom annotations and validators
+
+2. **Schema + Custom Validation** (`SchemaWithCustomValidation.java`)
+   - Combines JSON Schema validation with custom business rules
+   - Validates YAML files against schema first, then applies custom rules
+
+### Running Complex Validation Examples
+
+```bash
+# Basic complex validation example
+mvn exec:java -Dexec.mainClass="com.demo.schema.validation.ComplexValidationExample"
+
+# Schema + custom validation example
+mvn exec:java -Dexec.mainClass="com.demo.schema.validation.SchemaWithCustomValidation"
+
+# Run tests
+mvn test -Dtest=ComplexValidationTest
+```
+
+### Custom Validation Rules Examples
+
+```java
+// Rule: If file-watcher interval < 30 seconds, then monitor-uri must be specified
+if (config.getFileWatcher() != null && config.getFileWatcher().getInterval() < 30) {
+    if (config.getFileWatcher().getMonitorUri() == null || 
+        config.getFileWatcher().getMonitorUri().trim().isEmpty()) {
+        addConstraintViolation(context, "If file-watcher interval < 30 seconds, monitor-uri must be specified");
+        return false;
+    }
+}
+
+// Rule: If kafka-topic has SSL security, then port must be 9093
+if (config.getKafkaTopic() != null && config.getKafkaTopic().getConfigs() != null) {
+    Object securityProtocol = config.getKafkaTopic().getConfigs().get("security.protocol");
+    if ("SSL".equals(securityProtocol) || "SASL_SSL".equals(securityProtocol)) {
+        Object port = config.getKafkaTopic().getConfigs().get("port");
+        if (port != null && !"9093".equals(port.toString())) {
+            addConstraintViolation(context, "If SSL security is used, port must be 9093");
+            return false;
+        }
+    }
+}
+```
+
+### Creating Custom Validators
+
+1. **Define Custom Annotation**:
+```java
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = MyCustomValidator.class)
+public @interface MyCustomValidation {
+    String message() default "Custom validation failed";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+```
+
+2. **Implement Validator**:
+```java
+public class MyCustomValidator implements ConstraintValidator<MyCustomValidation, MyClass> {
+    @Override
+    public boolean isValid(MyClass obj, ConstraintValidatorContext context) {
+        // Your complex validation logic here
+        if (condition1 && condition2) {
+            return expectedResult;
+        }
+        return true;
+    }
+}
+```
+
+3. **Apply to Class**:
+```java
+@MyCustomValidation
+public class MyClass {
+    // Your fields here
+}
+```
+
+## Testing
 Run the test suite:
 
 ```bash
@@ -227,6 +316,12 @@ The tests validate:
 3. Make your changes
 4. Add tests for new functionality
 5. Submit a pull request
+
+
+## complicated validation
+Complex cross-field validation rules like the one you described cannot be implemented in JSON Schema alone. JSON Schema is limited to basic validation patterns and doesn't support complex business logic. For such scenarios, you'll need to implement custom validation in Java code.
+
+
 
 ## License
 

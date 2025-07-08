@@ -55,6 +55,13 @@
             <version>2.15.2</version>
         </dependency>
 
+        <!-- Spring Boot Starter Validation for complex validation rules (Java 8 compatible) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>2.7.18</version>
+        </dependency>
+
         <!-- JSON Schema to POJO generation -->
         <dependency>
             <groupId>com.sun.codemodel</groupId>
