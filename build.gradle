@@ -4,6 +4,20 @@ plugins {
     id 'org.jsonschema2pojo' version '1.2.1'
 }
 
+application {
+    mainClass = 'com.demo.schema.SchemaValidationExample'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.demo.schema.SchemaValidationExample'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
@@ -31,7 +45,7 @@ dependencies {
 
 // jsonschema2pojo configuration
 jsonSchema2Pojo {
-    source = files("${projectDir}/src/main/resources/schema")
+    source = files("${projectDir}/src/main/resources/schema/feeds_schema.json")
     targetPackage = 'com.demo.config.generated'
     generateBuilders = true
     usePrimitives = false
@@ -40,7 +54,7 @@ jsonSchema2Pojo {
     includeGetters = true
     includeSetters = true
     includeToString = true
-    includeEqualsAndHashCode = true
+    includeHashcodeAndEquals = true
     serializable = true
 }
 

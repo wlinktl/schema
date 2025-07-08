@@ -50,6 +50,10 @@
             "type": "string",
             "description": "URI for monitoring"
           },
+          "logs-uri": {
+            "type": "string",
+            "description": "URI for logs"
+          },
           "transaction": {
             "type": "object",
             "properties": {
@@ -59,9 +63,27 @@
                   "success-uri": {
                     "type": "string",
                     "description": "URI for successful commits"
+                  },
+                  "done-file": {
+                    "type": "object",
+                    "properties": {
+                      "uri": {
+                        "type": "string",
+                        "description": "URI for done files"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Extension for done files"
+                      },
+                      "template": {
+                        "type": "string",
+                        "description": "Template for done files"
+                      }
+                    },
+                    "required": ["uri", "type", "template"]
                   }
                 },
-                "required": ["success-uri"]
+                "required": ["success-uri", "done-file"]
               },
               "rollback": {
                 "type": "object",
@@ -78,6 +100,207 @@
           }
         },
         "required": ["name", "active", "interval", "inbound-uri", "preprocess-uri", "monitor-uri", "transaction"]
+      },
+      "kafka-file-replay": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Kafka file replay name"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the kafka file replay is active"
+          },
+          "flow-class": {
+            "type": "string",
+            "description": "Flow class for kafka file replay"
+          },
+          "interval": {
+            "type": "integer",
+            "description": "Polling interval in seconds",
+            "minimum": 1
+          },
+          "inbound-uri": {
+            "type": "string",
+            "description": "URI for inbound files"
+          },
+          "preprocess-uri": {
+            "type": "string",
+            "description": "URI for preprocessing"
+          },
+          "monitor-uri": {
+            "type": "string",
+            "description": "URI for monitoring"
+          },
+          "logs-uri": {
+            "type": "string",
+            "description": "URI for logs"
+          },
+          "transaction": {
+            "type": "object",
+            "properties": {
+              "commit": {
+                "type": "object",
+                "properties": {
+                  "success-uri": {
+                    "type": "string",
+                    "description": "URI for successful commits"
+                  },
+                  "done-file": {
+                    "type": "object",
+                    "properties": {
+                      "uri": {
+                        "type": "string",
+                        "description": "URI for done files"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Extension for done files"
+                      },
+                      "template": {
+                        "type": "string",
+                        "description": "Template for done files"
+                      }
+                    },
+                    "required": ["uri", "type", "template"]
+                  }
+                },
+                "required": ["success-uri", "done-file"]
+              },
+              "rollback": {
+                "type": "object",
+                "properties": {
+                  "failure-uri": {
+                    "type": "string",
+                    "description": "URI for failed transactions"
+                  }
+                },
+                "required": ["failure-uri"]
+              }
+            },
+            "required": ["commit", "rollback"]
+          }
+        },
+        "required": ["name", "active", "flow-class", "interval", "inbound-uri", "preprocess-uri", "monitor-uri", "transaction"]
+      },
+      "kafka-topic": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Kafka topic name"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the kafka topic is active"
+          },
+          "flow-class": {
+            "type": "string",
+            "description": "Flow class for kafka topic"
+          },
+          "inbound-uri": {
+            "type": "string",
+            "description": "URI for inbound files"
+          },
+          "preprocess-uri": {
+            "type": "string",
+            "description": "URI for preprocessing"
+          },
+          "monitor-uri": {
+            "type": "string",
+            "description": "URI for monitoring"
+          },
+          "logs-uri": {
+            "type": "string",
+            "description": "URI for logs"
+          },
+          "bootstrap-servers": {
+            "type": "string",
+            "description": "Kafka bootstrap servers"
+          },
+          "topics": {
+            "type": "string",
+            "description": "Kafka topics to consume"
+          },
+          "consumer-group-id": {
+            "type": "string",
+            "description": "Kafka consumer group ID"
+          },
+          "consumer-id": {
+            "type": "string",
+            "description": "Kafka consumer ID"
+          },
+          "starting-offsets": {
+            "type": "string",
+            "description": "Starting offsets for kafka consumption"
+          },
+          "configs": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "description": "Kafka configuration properties - flexible key-value pairs supporting string, number, boolean, and null values"
+          },
+          "transaction": {
+            "type": "object",
+            "properties": {
+              "commit": {
+                "type": "object",
+                "properties": {
+                  "success-uri": {
+                    "type": "string",
+                    "description": "URI for successful commits"
+                  },
+                  "done-file": {
+                    "type": "object",
+                    "properties": {
+                      "uri": {
+                        "type": "string",
+                        "description": "URI for done files"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Extension for done files"
+                      },
+                      "template": {
+                        "type": "string",
+                        "description": "Template for done files"
+                      }
+                    },
+                    "required": ["uri", "type", "template"]
+                  }
+                },
+                "required": ["success-uri", "done-file"]
+              },
+              "rollback": {
+                "type": "object",
+                "properties": {
+                  "failure-uri": {
+                    "type": "string",
+                    "description": "URI for failed transactions"
+                  }
+                },
+                "required": ["failure-uri"]
+              }
+            },
+            "required": ["commit", "rollback"]
+          }
+        },
+        "required": ["name", "active", "flow-class", "inbound-uri", "preprocess-uri", "monitor-uri", "bootstrap-servers", "topics", "consumer-group-id", "consumer-id", "starting-offsets", "configs", "transaction"]
       },
       "inbound-datasets": {
         "type": "array",
@@ -121,9 +344,13 @@
               "type": "boolean",
               "description": "Whether there's a trailing delimiter"
             },
-            "add-columns-csv": {
+            "add-columns": {
               "type": "string",
               "description": "Additional columns as CSV"
+            },
+            "drop-columns": {
+              "type": "string",
+              "description": "Columns to drop as CSV"
             },
             "cob-script": {
               "type": "string",
@@ -227,6 +454,17 @@
         }
       }
     },
-    "required": ["name", "file-watcher", "inbound-datasets"]
+    "required": ["name"],
+    "oneOf": [
+      {
+        "required": ["file-watcher", "inbound-datasets"]
+      },
+      {
+        "required": ["kafka-file-replay", "inbound-datasets"]
+      },
+      {
+        "required": ["kafka-topic", "inbound-datasets"]
+      }
+    ]
   }
 }

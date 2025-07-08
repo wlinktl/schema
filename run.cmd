@@ -1,0 +1,1 @@
+java -jar target/schema-1.0-SNAPSHOT.jar

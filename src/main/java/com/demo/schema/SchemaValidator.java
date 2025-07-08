@@ -10,6 +10,7 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -36,7 +37,7 @@ public class SchemaValidator {
      * @throws ProcessingException If schema is invalid
      */
     public JsonSchema loadSchema(String schemaPath) throws IOException, ProcessingException {
-        String schemaContent = Files.readString(Paths.get(schemaPath));
+        String schemaContent = new String(Files.readAllBytes(Paths.get(schemaPath)), StandardCharsets.UTF_8);
         JsonNode schemaNode = jsonMapper.readTree(schemaContent);
         return schemaFactory.getJsonSchema(schemaNode);
     }

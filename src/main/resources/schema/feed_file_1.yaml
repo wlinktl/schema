@@ -10,9 +10,14 @@
     inbound-uri: "inbound-uri-1"
     preprocess-uri: "preprocess-uri-1"
     monitor-uri: "monitor-uri-1"
+    logs-uri: "log-uri"
     transaction: 
       commit:
         success-uri: "success-uri-1"
+        done-file:
+          uri: "done-file-uri-1"
+          type: ".done"
+          template: "template-1"
       rollback:
         failure-uri: "failure-uri-1"
   inbound-datasets:
@@ -25,7 +30,8 @@
       compression: "gzip"
       delimiter: "|"
       trailing-delimeter: false
-      add-columns-csv: "a,b,c"
+      add-columns: "a,b,c"
+      drop-columns: "e,f,g"
       cob-script: "cob"
       text-header: 
         type: "type-1"
@@ -42,7 +48,7 @@
         token: ""
       output:
         hive:
-          table-name: "my_table_name"
+          table-name: "test_table"
           partitions:
             cntry_cluster_id: "G"
         done-file-uri: "done-file-uri-1"

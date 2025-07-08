@@ -1,7 +1,7 @@
 - name: "name1"
   active: true #optional: true by default"
-  layer: 'layer'
-  logs-uri: 'log-uri'
+  layer: "layer"
+  logs-uri: "log-uri"
  
   file-watcher:
     name: "name1"
@@ -10,12 +10,16 @@
     inbound-uri: "inbound-uri-1"
     preprocess-uri: "preprocess-uri-1"
     monitor-uri: "monitor-uri-1"
+    logs-uri: "log-uri"
     transaction: 
       commit:
         success-uri: "success-uri-1"
+        done-file:
+          uri: "done-file-uri-1"
+          type: ".done"
+          template: "template-1"
       rollback:
         failure-uri: "failure-uri-1"
-   
   inbound-datasets:
     - name: "name-1"
       active: true 
@@ -26,9 +30,9 @@
       compression: "gzip"
       delimiter: "|"
       trailing-delimeter: false
-      add-columns-csv: "a,b,c"
+      add-columns: "a,b,c"
+      drop-columns: "e,f,g"
       cob-script: "cob"
-      
       text-header: 
         type: "type-1"
         token: "EOH"
@@ -40,18 +44,10 @@
         column-count-position: 6
         column-names-present: true
         frequency-position: 3
-        
       text-trailer:
         token: ""
-
       output:
         hive:
           table-name: "test_table"
           partitions:
             cntry_cluster_id: "G"
-        done-file-uri: "done-file-uri-1"
-        done-file-type: ".done"
-
-		
-		
- 	  
