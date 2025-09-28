@@ -1,0 +1,40 @@
+{
+    "title": "Message Schema",
+    "required": [
+      "cobDate",
+      "subsNm",
+      "timestamp",
+      "records",
+      "trr",
+      "version",
+      "frequency",
+      "outboundLocation"
+    ],
+    "properties": {
+      "cobDate": {
+        "type": "string"
+      },
+      "subsNm": {
+        "type": "string"
+      },
+      "timestamp": {
+        "type": "string"
+      },
+      "records": {
+        "type": "number",
+        "minimum": 0
+      },
+      "trr": {
+        "type": "string"
+      },
+      "version": {
+        "type": "string"
+      },
+      "frequency": {
+        "type": "string"
+      },
+      "outboundLocation": {
+        "type": "string"
+      }
+    }
+  }

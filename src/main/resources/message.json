@@ -1,0 +1,25 @@
+{
+    "uniqueReqId": "1002",
+    "cobDate": "2024-12-31",
+    "consumerId": "123",
+    "subsNm": "api",
+    "timestamp": "2025-07-08 12:00:00 PM IST",
+    "feedIds": null,
+    "records": 12690093,
+    "trr": "GLOBAL",
+    "version": "2",
+    "columns": [
+      "arrg_id",
+      "eff_dt",
+      "obj_uniq_id_in_src_sys",
+      "arrg_x_arrg_rltnp_ty_cd",
+      "as_of_date",
+      "trr",
+      "version"
+    ],
+    "frequency": "ME",
+    "fileFormat": "PARQUET",
+    "isCompressed": false,
+    "outboundType": "S3",
+    "outboundLocation": "abc"
+  }

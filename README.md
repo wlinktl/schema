@@ -322,7 +322,18 @@ The tests validate:
 Complex cross-field validation rules like the one you described cannot be implemented in JSON Schema alone. JSON Schema is limited to basic validation patterns and doesn't support complex business logic. For such scenarios, you'll need to implement custom validation in Java code.
 
 
+##
+For a pure Kafka streaming use case, Spring Cloud Stream would be ideal. For your complex data processing pipeline, you might want to:
+
+## Use Spring Cloud Stream for Kafka consumption
+## Implement custom processors for the data transformation logic
+## Integrate with Spring Batch for file processing capabilities
+## Use Spring Data for Hive/database operations
 
 ## License
 
+# linux command
+
+# java -Dlog4j.configurationFile=classpath:log4j2.xml 
+ -DlogPath=$LOG_DIR -Dspring.profiles.active=toolkit -Dspring.configuration.location=${REF_TOKEN_PATH}/ -jar ${FL_JAR_PATH}/rdh_toolkit.jar --feeds file:{$REF_TOKEN_PATH}/{$PRODUCT}.yaml  1>&2 &PID=$!
 This project is licensed under the MIT License. 
